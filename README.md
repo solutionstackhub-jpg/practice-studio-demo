@@ -100,5 +100,5 @@ picture repeated.
 
 ## Stack
 
-Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · deployed on Vercel.
+Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · deployed on Vercel.
 No database, no server state, nothing to configure.
