@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── surfaces ────────────────────────────────────────────────── */
+  --color-bg:        #08090c;
+  --color-surface:   #0d0f14;
+  --color-surface-2: #12151c;
+  --color-surface-3: #171b24;
+  --color-line:      #1b202a;
+  --color-line-2:    #262c38;
+
+  /* ── text ────────────────────────────────────────────────────── */
+  --color-ink:    #edeff3;
+  --color-ink-2:  #c6ccd6;
+  --color-body:   #97a0ad;
+  --color-muted:  #6d7786;
+  --color-faint:  #4d5664;
+
+  /* ── one warm accent, used sparingly ─────────────────────────── */
+  --color-gold:      #f0b429;
+  --color-gold-2:    #ffcb57;
+  --color-gold-dim:  #8a6512;
+
+  /* ── data / state ────────────────────────────────────────────── */
+  --color-mint:  #4fd1a5;
+  --color-sky:   #6fc3f7;
+  --color-rose:  #ff6f7d;
+  --color-good:  #4fd1a5;
+  --color-bad:   #ff6f7d;
+
+  /* ── scales kept so component classes stay readable ──────────── */
+  /* accent scale (warm) */
+  --color-brand-50:  #1a1508;
+  --color-brand-100: #241c0c;
+  --color-brand-200: #3a2d12;
+  --color-brand-300: #5c4718;
+  --color-brand-400: #ffcb57;
+  --color-brand-500: #f0b429;
+  --color-brand-600: #f0b429;
+  --color-brand-700: #f5c14a;
+  --color-brand-800: #ffcb57;
+
+  /* positive */
+  --color-mint-50:  #0b1a15;
+  --color-mint-100: #14302a;
+  --color-mint-600: #4fd1a5;
+
+  /* neutral-cool, used for the clarity / filler dimension */
+  --color-violet-50:  #0e1721;
+  --color-violet-100: #1a2a39;
+  --color-violet-600: #6fc3f7;
+
+  /* alerts — deliberately rose, so they never blur into the gold accent */
+  --color-amber-50:  #1e1116;
+  --color-amber-100: #3b1d25;
+  --color-amber-500: #ff6f7d;
+  --color-amber-700: #ffa2ad;
+
+  /* filler-word highlight */
+  --color-rose-50:  #241318;
+  --color-rose-100: #3d1f27;
+  --color-rose-600: #ff97a2;
+
+  --color-canvas: #08090c;
+  --color-navy:   #0a0c11;
+
+  --radius-card: 12px;
+
+  --font-sans:   var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:   var(--font-mono), ui-monospace, monospace;
+  --font-serif:  var(--font-serif), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; color-scheme: dark; }
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv05" 1, "cv11" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: rgb(240 180 41 / .24); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; border-radius: 6px; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+
+  /* film grain — the thing that stops a dark UI looking like flat paint */
+  body::after {
+    content: "";
+    position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    opacity: .035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg); }
+  ::-webkit-scrollbar-thumb { background: var(--color-line-2); border-radius: 99px; border: 3px solid var(--color-bg); }
+  ::-webkit-scrollbar-thumb:hover { background: #333a47; }
+}
+
+@utility font-serif-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+/* mono numerals, proportional — for headline figures like 1,284 */
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: proportional-nums;
+  letter-spacing: -0.045em;
+}
+/* mono numerals, tabular — for table columns that must align */
+@utility tnum {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+@layer components {
+  /* Cards read as raised by a hairline top highlight, not a drop shadow.
+     Shadows disappear on dark backgrounds; light edges do not. */
+  .card {
+    position: relative;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 0 0 auto; height: 1px;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / .07) 18%, rgb(255 255 255 / .07) 82%, transparent);
+    pointer-events: none;
+  }
+  .card-flat { background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-card); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-weight: 550; font-size: .875rem; line-height: 1;
+    border-radius: 9px; padding: .68rem 1.05rem;
+    transition: background-color .16s ease, color .16s ease, border-color .16s ease, transform .1s ease;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+
+  .btn-primary { background: var(--color-gold); color: #17130a; font-weight: 600; }
+  .btn-primary:hover { background: var(--color-gold-2); }
+
+  .btn-tint { background: rgb(240 180 41 / .10); color: var(--color-gold); border: 1px solid rgb(240 180 41 / .18); }
+  .btn-tint:hover { background: rgb(240 180 41 / .16); border-color: rgb(240 180 41 / .3); }
+
+  .btn-ghost { background: var(--color-surface-2); color: var(--color-ink-2); border: 1px solid var(--color-line-2); }
+  .btn-ghost:hover { background: var(--color-surface-3); color: var(--color-ink); }
+
+  .chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.1rem; height: 2.1rem; border-radius: 8px;
+  }
+
+  /* micro label: small caps, wide tracking. Does a lot of the "designed" work. */
+  .eyebrow {
+    font-size: .6875rem; font-weight: 600; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--color-muted);
+  }
+  .thead {
+    font-size: .6875rem; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--color-faint);
+  }
+  .rowline { border-bottom: 1px solid var(--color-line); }
+}
+
+/* ── motion ─────────────────────────────────────────────────────── */
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise .5s cubic-bezier(.22,.68,.32,1) both; }
+
+@keyframes pulsering {
+  0%   { transform: scale(1);    opacity: .5; }
+  70%  { transform: scale(1.5);  opacity: 0; }
+  100% { transform: scale(1.5);  opacity: 0; }
+}
+.pulsering { animation: pulsering 2s cubic-bezier(.22,.68,.32,1) infinite; }
+
+@keyframes drift {
+  0%, 100% { transform: translate3d(0,0,0) scale(1); }
+  50%      { transform: translate3d(0,-14px,0) scale(1.04); }
+}
+.drift { animation: drift 14s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .pulsering, .drift { animation: none !important; }
+  * { transition-duration: .01ms !important; }
+}
